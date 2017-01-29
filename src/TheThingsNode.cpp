@@ -672,7 +672,8 @@ void TheThingsNode::configUSB(bool deepSleep)
 
 bool TheThingsNode::isUSBConnected()
 {
-  return USBSTA&(1<<VBUS);
+  return true;
+  //return USBSTA&(1<<VBUS);
 }
 
 /******************************************************************************
@@ -700,7 +701,7 @@ TheThingsNode::TheThingsNode()
   setColor(TTN_BLACK);
 
   // TODO: Can we enable/disable this at will to save memory?
-  USBCON|=(1<<OTGPADE);
+  //USBCON|=(1<<OTGPADE);
 
   pinMode(TTN_VBAT_MEAS_EN, OUTPUT);
   digitalWrite(TTN_VBAT_MEAS_EN, HIGH);
@@ -813,18 +814,18 @@ void TheThingsNode::deepSleep(void)
 {
   ADCSRA &= ~_BV(ADEN); 
   set_sleep_mode(SLEEP_MODE_PWR_DOWN);
-  MCUCR |= (1 << JTD);
-  USBCON |= (1 << FRZCLK);
+  //MCUCR |= (1 << JTD);
+  //USBCON |= (1 << FRZCLK);
   //USBCON &= ~_BV(USBE);
-  PLLCSR &= ~_BV(PLLE);
+  //PLLCSR &= ~_BV(PLLE);
   sleep_enable();
   sleep_mode();   //Sweet dreams!
 
   //wake up, after ISR we arrive here ->
   sleep_disable();
-  PLLCSR |= (1 << PLLE);
+  //PLLCSR |= (1 << PLLE);
   power_all_enable();
   //USBCON |= (1 << USBE);
-  USBCON &= ~_BV(FRZCLK);
+  //USBCON &= ~_BV(FRZCLK);
   ADCSRA |= (1 << ADEN);  
 }
